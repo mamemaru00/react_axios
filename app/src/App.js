@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "./components/axios";
+import requests from "./Requests";
 
 function App() {
+  const [movie, setMovie] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(requests.fetchTrending);
+      setMovie(response.data.results);
+      return response;
+    }
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      {movie.map((mov, index) => (
+        <div key={index}>
+          {mov.title} // この部分は実際のデータ構造に応じて適切に修正する必要があります
+        </div>
+      ))}
     </div>
   );
 }
